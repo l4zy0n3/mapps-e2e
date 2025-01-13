@@ -1,0 +1,15 @@
+{
+	"name": "mapps_playwright",
+	"version": "1.0.0",
+	"main": "index.js",
+	"license": "MIT",
+	"devDependencies": {
+		"cypress": "^13.0.0",
+		"@types/node": "^22.10.5",
+		"prettier": "^3.4.2"
+	},
+	"scripts": {},
+	"dependencies": {
+		"uuid": "^11.0.5"
+	}
+}
