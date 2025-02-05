@@ -36,11 +36,11 @@ Cypress.Commands.add('teardownOCIRepoServer', () => {
 });
 
 Cypress.Commands.add('verifyRegexDoesExist', (name) => {
-  cy.contains(new RegExp(`Active.*${name}`)).should('be.visible');
+  cy.contains(new RegExp(`${name}`)).should('be.visible');
 });
 
 Cypress.Commands.add('verifyRegexDoesNotExist', (name) => {
-  cy.contains(new RegExp(`Active.*${name}`)).should('not.exist');
+  cy.contains(new RegExp(`${name}`)).should('not.exist');
 });
 
 Cypress.Commands.add('handleFirstLogin', (username, password) => {

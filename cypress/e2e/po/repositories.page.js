@@ -1,3 +1,5 @@
+import 'cypress-wait-until';
+
 export class RepositoriesPage {
   get RepositoriesTable() {
     return cy.get('[data-testid="sortable-table"]')
@@ -11,8 +13,30 @@ export class RepositoriesPage {
   get DeleteButton() {
     return cy.get('[data-testid="sortable-table-promptRemove"]')
   }
+  get RepoNameInput() {
+    return cy.get('[data-testid="name-ns-description-name"] > .labeled-input > input')
+  }
+  get RepoNameLink(){
+    return cy.get('[data-testid="sortable-cell-0-1"] > span > a')
+  }
+  get ActionMenu(){
+    return cy.get('[data-testid="mathead-action-menu"]')
+  }
+  get CreateButton(){
+    return cy.contains('Create')
+  }
+
+  openEditRepoConfig(repoName) {
+    // cy.get(`[data-testid="row-${repoName}"]`).click()
+    // cy.get('[data-testid="action-menu-button"]').click()
+
+  }
+
   searchRepo(repositoryName) {
     this.RepositoriesFilter.type(repositoryName)
+    cy.waitUntil(() =>
+      cy.url().then(url => url.includes(`q=${repositoryName}`))
+    );
   }
   addRepo(repositoryName, repositoryURL, repositoryType, repositoryBranch) {
     cy.get('[data-testid="masthead-create"]').click()

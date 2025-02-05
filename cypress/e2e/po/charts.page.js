@@ -1,3 +1,5 @@
+import "cypress-wait-until"
+
 export class ChartsPage {
   get ChartInstallButton() {
     return cy.get('[data-testid="btn-chart-install"]')
@@ -57,6 +59,9 @@ export class ChartsPage {
   // Methods
   searchChart(chartName) {
     this.SearchInput.clear().type(`${chartName}{enter}`);
+    cy.waitUntil(() =>
+      cy.url().then(url => url.includes(`q=${chartName}`))
+    );
   }
 
   clickCheckboxForChart(chartName) {

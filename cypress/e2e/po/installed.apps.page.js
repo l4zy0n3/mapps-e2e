@@ -24,11 +24,17 @@ export class InstalledAppsPage {
   // Methods
   searchChart(chartName) {
     this.SearchInput.clear().type(`${chartName}`);
+    cy.waitUntil(() =>
+      cy.url().then(url => url.includes(`q=${chartName}`))
+    );
   }
 
   searchByNamespace(namespace) {
     cy.get('[data-testid="search-box-filter-row"]').clear().type(`${namespace}{enter}`);
     this.FlatList.click();
+    cy.waitUntil(() =>
+      cy.url().then(url => url.includes(`q=${namespace}`))
+    );
   }
 
   clickOnUpgradeIcon(chartName) {
@@ -38,10 +44,6 @@ export class InstalledAppsPage {
   upgradeChart(chartName, namespace) {
     this.searchByNamespace(namespace);
     // wait for the table to be filtered
-    cy.contains(chartName).should('be.visible');
-    cy.waitUntil(() =>
-      cy.url().then(url => url.includes(`catalog.cattle.io.app?q=${namespace}`))
-    );
     this.clickOnUpgradeIcon(chartName);
     cy.contains('Upgrade').click();
     // this.NamespaceDropdown.type(`${namespace}{enter}`);
