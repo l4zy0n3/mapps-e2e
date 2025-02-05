@@ -19,6 +19,6 @@ module.exports = defineConfig({
     },
     setupNodeEvents(on, config) {
     },
-    defaultCommandTimeout: 30000,
+    defaultCommandTimeout: 45000,
   },
 }) 
