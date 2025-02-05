@@ -11,6 +11,7 @@ describe('Charts Page Flows', () => {
     let repoPage;
 	const chartName = 'example-chart';
 	let namespace = '';
+	let installName = '';
 	const clusterName = 'test-cluster';
 	const domain = 'rancher.local';
 	const rancherPassword = 'admin';
@@ -42,11 +43,14 @@ describe('Charts Page Flows', () => {
         sidebar.navigateToReposPage();
 		repoPage.addRepo(repoName, repoUrl, 'oci', 'latest');
 		sidebar.navigateToChartsPage();
+		namespace = generateName('test-ns');
+		cy.exec(`kubectl create namespace ${namespace}`)
+		installName = generateName('example-chart');
 	});
 
 	afterEach(() => {
 		// console.log(`Deleting namespace: ${namespace}`)
-		// cy.exec(`kubectl delete namespace ${namespace}`)
+		cy.exec(`kubectl delete namespace ${namespace}`)
 	});
 
 	after(() => {
@@ -54,25 +58,12 @@ describe('Charts Page Flows', () => {
 	});
 
 	it('Search and Install Chart Flow', () => {
-		chartsPage.installChart(chartName);
+		chartsPage.installChart(chartName, '0.1.0', namespace, installName);
 		cy.get('[data-testid="action-button-async-button"]').should('be.visible');
-		cy.contains('SUCCESS').should('be.visible', { timeout: 120000 });
+		cy.contains('SUCCESS: helm install').should('be.visible', { timeout: 120000 });
 	});
 
-	// it('Delete Chart Flow', () => {
-	// 	chartsPage.deleteChart(chartName);
-	// });
-
-	// it('Download Chart Flow', () => {
-	// 	chartsPage.downloadChart(chartName);
-	// });
-
-	// it("Upgrade Installed Chart Flow", () => {
-	//   // Upgrade the installed chart
-	//   chartsPage.upgradeChart(chartName);
-
-	//   // Validate upgrade
-	//   cy.contains("Upgrade Complete").should('be.visible');
-	//   cy.contains("SUCCESS").should('be.visible');
-	// });
+	it('Download Chart Flow', () => {
+		chartsPage.downloadChart(chartName);
+	});
 });
