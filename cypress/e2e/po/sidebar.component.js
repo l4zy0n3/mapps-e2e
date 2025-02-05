@@ -1,7 +1,7 @@
 export class SideBar {
   navigateTabs(labels) {
     labels.forEach(label => {
-      cy.get('nav').contains(label).click()
+      cy.get('nav').contains(label).click({ force: true })
     })
     cy.get('nav').contains(labels[labels.length - 1]).should('be.visible')
   }
@@ -24,5 +24,9 @@ export class SideBar {
   navigateToReposPage() {
     cy.get('[data-testid="menu-cluster-local"]').click({ force: true })
     this.navigateTabs(['Apps', 'Repositories'])
+  }
+  navigateToRecentOperations() {
+    cy.get('[data-testid="menu-cluster-local"]').click({ force: true })
+    this.navigateTabs(['Apps', 'Recent Operations'])
   }
 }

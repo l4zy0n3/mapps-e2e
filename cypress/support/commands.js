@@ -39,14 +39,25 @@ Cypress.Commands.add('verifyRegexDoesExist', (name) => {
   cy.contains(new RegExp(`Active.*${name}`)).should('be.visible');
 });
 
+Cypress.Commands.add('verifyRegexDoesNotExist', (name) => {
+  cy.contains(new RegExp(`Active.*${name}`)).should('not.exist');
+});
+
 Cypress.Commands.add('handleFirstLogin', (username, password) => {
   cy.visit('/login');
 
   cy.get('body').then(($body) => {
-    if ($body.find('[data-testid="first-login-password"]').length > 0) {
+    // if cy.get('[data-testid="first-login-message"]' does not exist, then it is not the first login
+    if ($body.find('[data-testid="first-login-message"]').length > 0) {
       // Handle first login
-      cy.get('[data-testid="first-login-password"]').type(password);
-      cy.get('[data-testid="first-login-submit"]').click();
+      cy.get('input').type(password);
+      cy.get('[data-testid="login-submit"]').click();
+      cy.get('[data-testid="setup-agreement"] >.checkbox-container >.checkbox-custom').click();
+      // Handle first login
+      cy.get('input').type(password);
+      cy.get('[data-testid="login-submit"]').click();
+      cy.get('[data-testid="setup-agreement"] > .checkbox-container > .checkbox-custom').click();
+      cy.get('[data-testid="setup-submit"]').click();
     } else {
       // Fallback to normal login
       cy.get('[data-testid="local-login-username"]').type(username);
